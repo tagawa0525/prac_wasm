@@ -2,19 +2,19 @@ use serde::{Deserialize, Serialize};
 use serde_wasm_bindgen::{from_value, to_value};
 use wasm_bindgen::prelude::*;
 
-mod algorithms;
+pub mod algorithms;
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Store {
-    name: String,
-    free_shipping: FreeShipping,
-    base_shipping: f64,
+pub struct Store {
+    pub name: String,
+    pub free_shipping: FreeShipping,
+    pub base_shipping: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct FreeShipping {
-    num: u32,
-    sum: f64,
+pub struct FreeShipping {
+    pub num: u32,
+    pub sum: f64,
 }
 
 #[wasm_bindgen]
