@@ -10,6 +10,9 @@
 <body>
     <h1>Wasm Optimizer</h1>
     <button id="run-button">Run Optimization</button>
+    <h2>Input Data</h2>
+    <pre id="input-data"></pre>
+    <h2>Result</h2>
     <pre id="result"></pre>
     <script type="module">
         import init, { solve_optimization_problem } from './pkg/optimizer_wasm.js';
@@ -33,13 +36,26 @@
                 { 'name': 'Shop C', 'free_shipping': { 'num': 2, 'sum': 120 }, 'base_shipping': 7 }
             ];
 
+            // 入力データを表示
+            const inputDataParts = [
+                `Prices:\n${prices.map((p, i) => `Shop ${String.fromCharCode(65 + i)}: ${JSON.stringify(p)}`).join('\n')}`,
+                `Stocks:\n${stocks.map((s, i) => `Shop ${String.fromCharCode(65 + i)}: ${JSON.stringify(s)}`).join('\n')}`,
+                `Needs: ${JSON.stringify(needs)}`,
+                `Stores:\n${stores.map(store => `${store.name}: ${JSON.stringify(store)}`).join('\n')}`
+            ];
+            const inputData = inputDataParts.join('\n\n');
+            document.getElementById('input-data').textContent = inputData;
+
+            // 最適化問題を解く
             const result = solve_optimization_problem(
                 prices,
                 stocks,
                 needs,
                 stores
             );
-            document.getElementById('result').textContent = result;
+            const [best_distribution, total_cost] = result;
+            const bestDistFormatted = best_distribution.map((dist, i) => `Shop ${String.fromCharCode(65 + i)}: ${JSON.stringify(dist)}`).join('\n');
+            document.getElementById('result').textContent = `Best Distribution:\n${bestDistFormatted}\n\nTotal Cost: ${total_cost}`;
         }
 
         document.getElementById('run-button').addEventListener('click', run);
