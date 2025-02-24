@@ -23,19 +23,7 @@ pub fn optimize_by_greedy(
         }
     }
 
-    // 送料の計算
-    for (store_idx, store) in stores.iter().enumerate() {
-        let total_items: u32 = best_dist[store_idx].iter().sum();
-        let total_price: f64 = best_dist[store_idx]
-            .iter()
-            .enumerate()
-            .map(|(item_idx, &quantity)| quantity as f64 * prices[store_idx][item_idx])
-            .sum();
-
-        if total_items < store.free_shipping.num && total_price < store.free_shipping.sum {
-            total_cost += store.base_shipping;
-        }
-    }
+    total_cost += super::utils::calculate_shipping_cost(&best_dist, prices, stores);
 
     (best_dist, total_cost)
 }
