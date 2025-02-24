@@ -1,51 +1,22 @@
-#[cfg(test)]
-mod tests {
-    use optimizer_wasm::algorithms::greedy::optimize_by_greedy;
-    use optimizer_wasm::{FreeShipping, Store};
+mod common;
 
-    #[test]
-    fn test_optimize_by_greedy() {
-        #[rustfmt::skip]
-        let prices = vec![
-            vec![ 13000.0, 5000.0, 2000.0, 4000.0, 6000.0, 7500.0, 8000.0, 3000.0, 9000.0, 8000.0, 2000.0, 2000.0, 4000.0, 4000.0, 5000.0, 400.0 ],
-            vec![ 12000.0, 6000.0, 3000.0, 5000.0, 7000.0, 6000.0, 9000.0, 1000.0, 2000.0, 8500.0, 1000.0, 4000.0, 3000.0, 4000.0, 5500.0, 500.0 ],
-            vec![ 14000.0, 5500.0, 2500.0, 3000.0, 8000.0, 7000.0, 6000.0, 2000.0, 6000.0, 9000.0, 2000.0, 2500.0, 4500.0, 4000.0, 4000.0, 600.0 ],
-        ];
-        let stocks = vec![
-            vec![1, 2, 1, 1, 2, 3, 4, 5, 6, 3, 2, 2, 4, 4, 5, 8],
-            vec![0, 2, 1, 2, 2, 3, 4, 5, 6, 3, 2, 2, 4, 4, 5, 8],
-            vec![2, 2, 1, 3, 2, 3, 4, 5, 6, 3, 2, 2, 4, 4, 5, 8],
-        ];
-        let needs = vec![1, 2, 3, 4, 5, 6, 5, 4, 8, 7, 3, 5, 7, 9, 3, 18];
-        let stores = vec![
-            Store {
-                name: "Shop A".to_string(),
-                free_shipping: FreeShipping { num: 5, sum: 110.0 },
-                base_shipping: 5.0,
-            },
-            Store {
-                name: "Shop B".to_string(),
-                free_shipping: FreeShipping { num: 7, sum: 100.0 },
-                base_shipping: 3.0,
-            },
-            Store {
-                name: "Shop C".to_string(),
-                free_shipping: FreeShipping { num: 2, sum: 120.0 },
-                base_shipping: 7.0,
-            },
-        ];
+use self::common::*;
+use optimizer_wasm::algorithms::greedy::optimize_by_greedy;
 
-        let (best_dist, total_cost) = optimize_by_greedy(&prices, &stocks, &needs, &stores);
+#[test]
+fn test_optimize_by_greedy() {
+    let (prices, stocks, needs, stores) = get_test_data();
 
-        // 期待される結果をここに記述
-        let expected_best_dist = vec![
-            vec![1, 2, 1, 1, 2, 3, 4, 4, 6, 3, 2, 2, 4, 4, 3, 8],
-            vec![0, 0, 1, 2, 2, 3, 1, 0, 2, 3, 1, 2, 3, 4, 0, 8],
-            vec![0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 2],
-        ];
-        let expected_total_cost = 395400.0;
+    let (best_dist, total_cost) = optimize_by_greedy(&prices, &stocks, &needs, &stores);
 
-        assert_eq!(best_dist, expected_best_dist);
-        assert_eq!(total_cost, expected_total_cost);
-    }
+    // 期待される結果をここに記述
+    let expected_best_dist = vec![
+        vec![1, 2, 1, 1, 2, 3, 4, 4, 6, 3, 2, 2, 4, 4, 3, 8],
+        vec![0, 0, 1, 2, 2, 3, 1, 0, 2, 3, 1, 2, 3, 4, 0, 8],
+        vec![0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 2],
+    ];
+    let expected_total_cost = 395400.0;
+
+    assert_eq!(best_dist, expected_best_dist);
+    assert_eq!(total_cost, expected_total_cost);
 }
