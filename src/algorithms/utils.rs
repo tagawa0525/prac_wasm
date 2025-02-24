@@ -21,3 +21,28 @@ pub fn calculate_shipping_cost(
     }
     return shipping_cost;
 }
+
+pub fn calculate_total_cost(
+    distribution: &Vec<Vec<u32>>,
+    prices: &Vec<Vec<f64>>,
+    stores: &Vec<Store>,
+) -> f64 {
+    let mut total_cost = 0.0;
+    for (shop_idx, shop_dist) in distribution.iter().enumerate() {
+        let mut shop_sum = 0.0;
+        let mut shop_items = 0;
+        for (item_idx, &count) in shop_dist.iter().enumerate() {
+            shop_sum += prices[shop_idx][item_idx] * count as f64;
+            shop_items += count;
+        }
+        let shipping = if shop_items >= stores[shop_idx].free_shipping_num
+            || shop_sum >= stores[shop_idx].free_shipping_sum
+        {
+            0.0
+        } else {
+            stores[shop_idx].base_shipping
+        };
+        total_cost += shop_sum + shipping;
+    }
+    total_cost
+}
