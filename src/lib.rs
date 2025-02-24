@@ -7,14 +7,9 @@ pub mod algorithms;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Store {
     pub name: String,
-    pub free_shipping: FreeShipping,
+    pub free_shipping_num: u32,
+    pub free_shipping_sum: f64,
     pub base_shipping: f64,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct FreeShipping {
-    pub num: u32,
-    pub sum: f64,
 }
 
 #[wasm_bindgen]

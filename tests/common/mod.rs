@@ -1,4 +1,4 @@
-use optimizer_wasm::{FreeShipping, Store};
+use optimizer_wasm::Store;
 
 pub fn get_test_data() -> (Vec<Vec<f64>>, Vec<Vec<u32>>, Vec<u32>, Vec<Store>) {
     #[rustfmt::skip]
@@ -16,17 +16,20 @@ pub fn get_test_data() -> (Vec<Vec<f64>>, Vec<Vec<u32>>, Vec<u32>, Vec<Store>) {
     let stores = vec![
         Store {
             name: "Shop A".to_string(),
-            free_shipping: FreeShipping { num: 5, sum: 110.0 },
+            free_shipping_num: 5,
+            free_shipping_sum: 110.0,
             base_shipping: 5.0,
         },
         Store {
             name: "Shop B".to_string(),
-            free_shipping: FreeShipping { num: 7, sum: 100.0 },
+            free_shipping_num: 7,
+            free_shipping_sum: 100.0,
             base_shipping: 3.0,
         },
         Store {
             name: "Shop C".to_string(),
-            free_shipping: FreeShipping { num: 2, sum: 120.0 },
+            free_shipping_num: 2,
+            free_shipping_sum: 120.0,
             base_shipping: 7.0,
         },
     ];

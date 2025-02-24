@@ -15,7 +15,7 @@ pub fn calculate_shipping_cost(
             .map(|(item_idx, &quantity)| quantity as f64 * prices[store_idx][item_idx])
             .sum();
 
-        if total_items < store.free_shipping.num && total_price < store.free_shipping.sum {
+        if total_items < store.free_shipping_num && total_price < store.free_shipping_sum {
             shipping_cost += store.base_shipping;
         }
     }
