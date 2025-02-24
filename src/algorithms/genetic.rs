@@ -9,6 +9,11 @@ struct Individual {
     fitness: f64,
 }
 
+const POPULATION_SIZE: usize = 100;
+const GENERATION_SIZE: usize = 500;
+const CROSSOVER_RATE: f64 = 0.7;
+const MUTATION_RATE: f64 = 0.1;
+
 pub fn optimize(
     prices: &Vec<Vec<f64>>,
     stocks: &Vec<Vec<u32>>,
@@ -16,32 +21,29 @@ pub fn optimize(
     stores: &Vec<Store>,
 ) -> (Vec<Vec<u32>>, f64) {
     let mut rng = rand::rng();
-    let population_size = 50;
-    let mut population: Vec<Individual> = (0..population_size)
+    let mut population: Vec<Individual> = (0..POPULATION_SIZE - 1)
         .map(|_| {
-            let dist = generate_initial_distribution(&stocks, &needs, &mut rng);
-            let fitness = calculate_total_cost(&dist, &prices, &stores);
-            Individual {
-                genes: dist,
-                fitness,
-            }
+            let genes = generate_initial_distribution(&stocks, &needs, &mut rng);
+            let fitness = calculate_total_cost(&genes, &prices, &stores);
+            Individual { genes, fitness }
         })
         .collect();
+    let (genes, fitness) = super::greedy::optimize(&prices, &stocks, &needs, &stores);
+    population.push(Individual { genes, fitness });
 
-    for _ in 0..1000 {
-        // 世代数
+    for _ in 0..GENERATION_SIZE {
         population.sort_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap());
-        let mut new_population = vec![population[0].clone()]; // エリート保存
+        let mut new_population = vec![population[0].clone()];
 
-        while new_population.len() < population_size {
-            let parent1 = &population[rng.random_range(0..population_size / 2)]; // 上位50%から選択
-            let parent2 = &population[rng.random_range(0..population_size / 2)];
-            let mut child_dist = if rng.random::<f64>() < 0.7 {
+        while new_population.len() < POPULATION_SIZE {
+            let parent1 = tournament_select(&population, 3, &mut rng);
+            let parent2 = tournament_select(&population, 3, &mut rng);
+            let mut child_dist = if rng.random::<f64>() < CROSSOVER_RATE {
                 crossover(&parent1.genes, &parent2.genes, &stocks, &needs, &mut rng)
             } else {
                 parent1.genes.clone()
             };
-            if rng.random::<f64>() < 0.1 {
+            if rng.random::<f64>() < MUTATION_RATE {
                 child_dist = mutate(&child_dist, &stocks, &needs, &mut rng);
             }
             let fitness = calculate_total_cost(&child_dist, &prices, &stores);
@@ -55,6 +57,17 @@ pub fn optimize(
 
     population.sort_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap());
     (population[0].genes.clone(), population[0].fitness)
+}
+
+fn tournament_select(population: &Vec<Individual>, size: u32, rng: &mut impl Rng) -> Individual {
+    let candidates: Vec<&Individual> = (0..size)
+        .map(|_| &population[rng.random_range(0..population.len())])
+        .collect();
+    candidates
+        .into_iter()
+        .min_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap())
+        .unwrap()
+        .clone()
 }
 
 // 初期化
