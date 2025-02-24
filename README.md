@@ -1,4 +1,4 @@
-# simplex_wasm
+# Optimizer-Wasm
 
 このプロジェクトは、Rustを使用して最適化問題のWebAssemblyアプリケーションを作成します。
 JavaScriptから呼び出すことにより高速に最適化問題を解くことを目的とします。
@@ -14,18 +14,22 @@ JavaScriptから呼び出すことにより高速に最適化問題を解くこ�
 このプロジェクトをビルドして実行するには、Rustと必要なWebAssemblyツールがインストールされていることを確認してください。以下の手順に従ってください。
 
 1. リポジトリをクローンするか、プロジェクトファイルをダウンロードします。
+```
+   git clone git@github.com:tagawa0525/prac_wasm.git
+```
 2. プロジェクトディレクトリに移動します:
    ```
-   cd simplex_wasm
+   cd prac_wasm
    ```
 3. プロジェクトをビルドします:
    ```
-   cargo build
+   wasm-pack build --target web
    ```
-4. アプリケーションを実行します:
+4. HTTPサーバーを立ち上げます:
    ```
-   cargo run
+   python -m http.server
    ```
+
 
 # 以下が今回対象とする最適化問題の例です。
 
