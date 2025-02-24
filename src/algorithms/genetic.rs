@@ -9,8 +9,8 @@ struct Individual {
     fitness: f64,
 }
 
-const POPULATION_SIZE: usize = 100;
-const GENERATION_SIZE: usize = 500;
+const POPULATION_SIZE: usize = 1000;
+const GENERATION_SIZE: usize = 5000;
 const CROSSOVER_RATE: f64 = 0.7;
 const MUTATION_RATE: f64 = 0.1;
 

@@ -15,7 +15,7 @@ fn test_optimize_by_greedy() {
         vec![0, 0, 1, 2, 2, 3, 1, 0, 2, 3, 1, 2, 3, 4, 0, 8],
         vec![0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 2],
     ];
-    let expected_total_cost = 398100.0;
+    let expected_total_cost = 405100.0;
 
     assert_eq!(total_cost, expected_total_cost);
     assert_eq!(best_dist, expected_best_dist);

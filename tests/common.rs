@@ -16,21 +16,21 @@ pub fn get_test_data() -> (Vec<Vec<f64>>, Vec<Vec<u32>>, Vec<u32>, Vec<Store>) {
     let stores = vec![
         Store {
             name: "Shop A".to_string(),
-            free_shipping_num: 5,
-            free_shipping_sum: 110.0,
-            base_shipping: 5.0,
+            free_shipping_num: 50,
+            free_shipping_sum: 110000.0,
+            base_shipping: 5000.0,
         },
         Store {
             name: "Shop B".to_string(),
-            free_shipping_num: 7,
-            free_shipping_sum: 100.0,
-            base_shipping: 3.0,
+            free_shipping_num: 70,
+            free_shipping_sum: 100000.0,
+            base_shipping: 3000.0,
         },
         Store {
             name: "Shop C".to_string(),
-            free_shipping_num: 2,
-            free_shipping_sum: 120.0,
-            base_shipping: 7.0,
+            free_shipping_num: 20,
+            free_shipping_sum: 120000.0,
+            base_shipping: 7000.0,
         },
     ];
     (prices, stocks, needs, stores)
