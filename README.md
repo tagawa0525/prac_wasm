@@ -24,9 +24,13 @@ JavaScriptから呼び出すことにより高速に最適化問題を解くこ�
    cargo install wasm-pack
    wasm-pack build --target web
    ```
-4. HTTPサーバーを立ち上げます:
+4. HTTPサーバーを立ち上げ、ブラウザから`localhost:8000`にアクセスします。
    ```
    python -m http.server
+   ```
+4. もしくは、直下のJavascriptを実行します。
+   ```
+   deno  --allow-read .\optimizer-wasm.js
    ```
 
 ## `src/lib.rs`の説明
