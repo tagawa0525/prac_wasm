@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::{rngs::SmallRng, Rng, SeedableRng};
 
 use super::utils::calculate_total_cost;
 use crate::Store;
@@ -20,7 +20,7 @@ pub fn optimize(
     needs: &Vec<u32>,
     stores: &Vec<Store>,
 ) -> (Vec<Vec<u32>>, f64) {
-    let mut rng = rand::rng();
+    let mut rng = SmallRng::seed_from_u64(0);
     let mut population: Vec<Individual> = (0..POPULATION_SIZE - 1)
         .map(|_| {
             let genes = generate_initial_distribution(&stocks, &needs, &mut rng);

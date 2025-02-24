@@ -24,7 +24,7 @@ pub fn solve_optimization_problem(
     let needs: Vec<u32> = from_value(needs).unwrap();
     let stores: Vec<Store> = from_value(stores).unwrap();
 
-    let (best_dist, total_cost) = algorithms::greedy::optimize(&prices, &stocks, &needs, &stores);
+    let (best_dist, total_cost) = algorithms::genetic::optimize(&prices, &stocks, &needs, &stores);
 
     let result = to_value(&(best_dist, total_cost)).unwrap();
     result
