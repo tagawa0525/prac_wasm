@@ -1,6 +1,6 @@
 use crate::Store;
 
-pub fn optimize_by_greedy(
+pub fn optimize(
     prices: &Vec<Vec<f64>>,
     stocks: &Vec<Vec<u32>>,
     needs: &Vec<u32>,
