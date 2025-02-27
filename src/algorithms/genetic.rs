@@ -1,6 +1,6 @@
 use rand::{rngs::SmallRng, Rng, SeedableRng};
 
-use super::utils::calculate_total_cost;
+use super::utils::calculate_cost;
 use crate::Store;
 
 #[derive(Clone)]
@@ -19,16 +19,17 @@ pub fn optimize(
     stocks: &Vec<Vec<u32>>,
     needs: &Vec<u32>,
     stores: &Vec<Store>,
-) -> (Vec<Vec<u32>>, f64) {
+) -> (Vec<Vec<u32>>, f64, f64) {
     let mut rng = SmallRng::seed_from_u64(0);
     let mut population: Vec<Individual> = (0..POPULATION_SIZE - 1)
         .map(|_| {
             let genes = generate_initial_distribution(&stocks, &needs, &mut rng);
-            let fitness = calculate_total_cost(&genes, &prices, &stores);
+            let (fitness, _shipping_cost) = calculate_cost(&genes, &prices, &stores);
             Individual { genes, fitness }
         })
         .collect();
-    let (genes, fitness) = super::greedy::optimize(&prices, &stocks, &needs, &stores);
+    let (genes, fitness, _shipping_cost) =
+        super::greedy::optimize(&prices, &stocks, &needs, &stores);
     population.push(Individual { genes, fitness });
 
     for _ in 0..GENERATION_SIZE {
@@ -46,7 +47,7 @@ pub fn optimize(
             if rng.random::<f64>() < MUTATION_RATE {
                 child_dist = mutate(&child_dist, &stocks, &needs, &mut rng);
             }
-            let fitness = calculate_total_cost(&child_dist, &prices, &stores);
+            let (fitness, _shipping_cost) = calculate_cost(&child_dist, &prices, &stores);
             new_population.push(Individual {
                 genes: child_dist,
                 fitness,
@@ -56,7 +57,8 @@ pub fn optimize(
     }
 
     population.sort_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap());
-    (population[0].genes.clone(), population[0].fitness)
+    let (total_cost, shipping_cost) = calculate_cost(&population[0].genes, &prices, &stores);
+    (population[0].genes.clone(), total_cost, shipping_cost)
 }
 
 fn tournament_select(population: &Vec<Individual>, size: u32, rng: &mut impl Rng) -> Individual {

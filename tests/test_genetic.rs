@@ -2,12 +2,13 @@ mod common;
 
 use self::common::*;
 use optimizer_wasm::algorithms::genetic::optimize;
+use serde::de::Expected;
 
 #[test]
 fn test_optimize_by_greedy() {
     let (prices, stocks, needs, stores) = get_test_data();
 
-    let (best_dist, total_cost) = optimize(&prices, &stocks, &needs, &stores);
+    let (best_dist, total_cost, shipping_cost) = optimize(&prices, &stocks, &needs, &stores);
 
     // 期待される結果をここに記述
 
@@ -17,7 +18,9 @@ fn test_optimize_by_greedy() {
         vec![0, 0, 1, 3, 1, 2, 4, 0, 2, 1, 1, 2, 0, 1, 3, 2],
     ];
     let expected_total_cost = 335100.0;
+    let expected_shipping_cost = 0.0;
 
     assert_eq!(total_cost, expected_total_cost);
+    assert_eq!(shipping_cost, expected_shipping_cost);
     assert_eq!(best_dist, expected_best_dist);
 }

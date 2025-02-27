@@ -5,7 +5,7 @@ pub fn optimize(
     stocks: &Vec<Vec<u32>>,
     needs: &Vec<u32>,
     stores: &Vec<Store>,
-) -> (Vec<Vec<u32>>, f64) {
+) -> (Vec<Vec<u32>>, f64, f64) {
     let mut best_dist = vec![vec![0; needs.len()]; stores.len()];
 
     for (item_idx, &need) in needs.iter().enumerate() {
@@ -21,7 +21,7 @@ pub fn optimize(
         }
     }
 
-    let total_cost = super::utils::calculate_total_cost(&best_dist, prices, stores);
+    let (total_cost, shipping_cost) = super::utils::calculate_cost(&best_dist, prices, stores);
 
-    (best_dist, total_cost)
+    (best_dist, total_cost, shipping_cost)
 }

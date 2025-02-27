@@ -37,9 +37,9 @@ async function run() {
         needs,
         stores
     );
-    const [best_distribution, total_cost] = result;
+    const [best_distribution, total_cost, shipping_cost] = result;
     const bestDistFormatted = best_distribution.map((dist, i) => `Shop ${String.fromCharCode(65 + i)}: ${JSON.stringify(dist)}`).join('\n');
-    const resultText = `Best Distribution:\n${bestDistFormatted}\n\nTotal Cost: ${total_cost}`;
+    const resultText = `Best Distribution:\n${bestDistFormatted}\n\nTotal    Cost: ${total_cost}\nShipping Cost: ${shipping_cost}`;
 
     // 結果を標準出力に出力
     console.log(resultText);

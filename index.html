@@ -53,9 +53,9 @@
                 needs,
                 stores
             );
-            const [best_distribution, total_cost] = result;
+            const [best_distribution, total_cost, shipping_cost] = result;
             const bestDistFormatted = best_distribution.map((dist, i) => `Shop ${String.fromCharCode(65 + i)}: ${JSON.stringify(dist)}`).join('\n');
-            document.getElementById('result').textContent = `Best Distribution:\n${bestDistFormatted}\n\nTotal Cost: ${total_cost}`;
+            document.getElementById('result').textContent = `Best Distribution:\n${bestDistFormatted}\n\nTotal    Cost: ${total_cost}\nShipping Cost: ${shipping_cost}\n\n`;
         }
 
         document.getElementById('run-button').addEventListener('click', run);
