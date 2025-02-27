@@ -15,7 +15,7 @@ pub fn calculate_shipping_cost(
             shipping_cost += store.base_shipping;
         }
     }
-    return shipping_cost;
+    shipping_cost
 }
 
 // 合計コストの計算
